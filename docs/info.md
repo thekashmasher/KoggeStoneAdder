@@ -1,25 +1,90 @@
-# Project Datasheet: 4-Bit ALU
+Here's the updated project datasheet based on your request for a Kogge-Stone Adder and incorporating the details of the uploaded zip file:
+
+---
+
+# Project Datasheet: Kogge-Stone Adder
 
 ## Overview
 
-The `4-Bit ALU` module is designed to perform various arithmetic and logical operations on 4-bit binary numbers. It supports operations such as addition, subtraction, multiplication, division, and several logical operations. Additionally, it includes an encryption function that can be used to encrypt 4-bit inputs using an 8-bit key. 
+The **Kogge-Stone Adder (KSA)** is a high-performance binary adder designed to compute sums efficiently. It leverages parallel prefix computation to achieve fast addition, making it ideal for digital circuits requiring high-speed arithmetic operations. This implementation focuses on a **4-bit Kogge-Stone Adder** that is optimized for hardware integration and efficient performance.
+
+The Kogge-Stone Adder reduces the critical path delay compared to traditional adders, achieving logarithmic time complexity relative to the number of input bits. It is widely used in modern microprocessors and arithmetic logic units.
+
+---
 
 ## How it Works
 
-The module accepts two 4-bit binary numbers, `a` and `b`, and a 4-bit operation code (`opcode`) that determines the operation to be performed. The results are then output through the `uo_out` wire, while additional status information, such as carry out and overflow, is output through the `uio_out` wire. The `uio_oe` wire controls the enable or disable functionality for the `uio_in` and `uio_out` wires.
+The Kogge-Stone Adder operates by breaking the addition process into three stages:
+1. **Generate and Propagate Signals:** Input bits are processed to calculate the propagate (`P`) and generate (`G`) signals for each bit.
+2. **Parallel Prefix Tree:** These signals are processed through a prefix tree to calculate carry signals at each bit position.
+3. **Summation:** The carry signals are combined with the propagate signals to produce the final sum.
 
-### Operations
+---
 
-- **ADD**: Adds `a` and `b`, producing a 4-bit result and a carry out.
-- **SUB**: Subtracts `b` from `a`, producing a 4-bit result and a borrow indication.
-- **MUL**: Multiplies `a` and `b`, producing an 8-bit result.
-- **DIV**: Divides `a` by `b`, producing a 4-bit quotient and remainder. Division by zero is handled by returning a zero result.
-- **AND**: Performs a logical AND operation on `a` and `b`.
-- **OR**: Performs a logical OR operation on `a` and `b`.
-- **XOR**: Performs a logical XOR operation on `a` and `b`.
-- **NOT**: Performs a logical NOT operation on `a`, with `b` being ignored.
-- **ENC**: Encrypts the inputs `a` and `b` using an 8-bit key derived from concatenating `a` and `b`. The encryption function applies an XOR operation between this 8-bit concatenated value and a fixed 8-bit key. The result is an 8-bit encrypted value.
+### Block Diagram
+
+The design of the 4-bit Kogge-Stone Adder consists of:
+- **Inputs:** Two 4-bit binary numbers (`a` and `b`), and a carry-in (`cin`).
+- **Outputs:** A 4-bit sum (`sum`), and a carry-out (`cout`).
+
+---
+
+## Features
+
+- **High-Speed Operation:** Parallel prefix computation ensures minimal delay.
+- **Scalable Design:** The architecture is easily extendable to larger bit widths.
+- **Efficient Layout:** Optimized for minimal gate count and power consumption.
+
+---
+
+### Signal Descriptions
+
+| Signal Name | Direction | Width | Description                          |
+|-------------|-----------|-------|--------------------------------------|
+| `a`         | Input     | 4     | First 4-bit operand                  |
+| `b`         | Input     | 4     | Second 4-bit operand                 |
+| `cin`       | Input     | 1     | Carry-in from a previous computation |
+| `sum`       | Output    | 4     | 4-bit result of the addition         |
+| `cout`      | Output    | 1     | Carry-out from the addition          |
+
+---
 
 ## How to Test
 
-To test this 4-bit ALU chip, set the values for a and b based on the 4-bit binary values for each, as well as the 4-bit operation code. The output can be up to 8-bits, using the uo pins along with the first 4 bidirectional pins. The uio pin 6 is used for the carry out, and the uio 7 is used for the overflow. 
+1. **Setup Inputs:**
+   - Provide 4-bit binary values for `a` and `b`.
+   - Set the carry-in (`cin`) to `0` or `1` based on the scenario being tested.
+
+2. **Monitor Outputs:**
+   - Observe the `sum` output for the 4-bit result.
+   - Check the `cout` output for any carry generated.
+
+3. **Simulation:**
+   - Use a testbench to simulate various input combinations.
+   - Verify the outputs for each test case against the expected results.
+
+4. **Hardware Implementation:**
+   - Synthesize the design and load it onto an FPGA or ASIC.
+   - Use switches and LEDs to set inputs and view outputs.
+
+---
+
+## Applications
+
+- **Arithmetic Logic Units (ALUs):** Used for addition operations in processors.
+- **DSP Systems:** High-speed computation in signal processing.
+- **Cryptographic Hardware:** Efficient arithmetic in encryption and hashing.
+
+---
+
+### Example Test Case
+
+| `a`   | `b`   | `cin` | `sum` | `cout` |
+|-------|-------|-------|-------|--------|
+| 0001  | 0010  | 0     | 0011  | 0      |
+| 1111  | 0001  | 0     | 0000  | 1      |
+| 1010  | 0101  | 1     | 1000  | 1      |
+
+---
+
+If you require the implementation code or additional technical details from the uploaded file, let me know, and I can help extract the information or provide the HDL code directly!

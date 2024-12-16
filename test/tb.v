@@ -6,7 +6,7 @@
 */
 module tb ();
 
-  // Dump the signals to a VCD file. You can view it with gtkwave.
+  // Dump the signals to a VCD file. You can view it with gtkwave or surfer.
   initial begin
     $dumpfile("tb.vcd");
     $dumpvars(0, tb);
@@ -28,7 +28,7 @@ module tb ();
 `endif
 
   // Replace tt_um_example with your module name:
-  tt_um_kogge_stone (
+  tt_um_example user_project (
 
       // Include power ports for the Gate Level test:
 `ifdef GL_TEST
